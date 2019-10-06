@@ -44,3 +44,29 @@ p <- ggplot(data = d, aes(x=x, y=fx)) + xlab("x") + ylab("f(x)") + geom_line()
 p
 ```
 
+```{r}
+library(manipulate)
+manipulate(
+  ggplot(data = d, aes(x=x, y=fx)) + xlab("x") + ylab("f(x)") + geom_line() + geom_polygon(data=data.frame(xvals=c(0,n,n,0),fxvals=c(0,K*n^(a-1)*(1-n)^(b-1),0,0)), aes(x=xvals,y=fxvals)) + ggtitle(paste("Area Under Function = ", 0.5 * n * K*n^(a-1)*(1-n)^(b-1),sep=" ")), n=slider(0, 1, initial=0.5, step=0.01)
+)
+```
+
+```{r}
+manipulate(
+    plot(seq(from=(mu - 4*sigma), to=(mu + 4*sigma), length.out = 1000),
+             dnorm(seq(from=(mu - 4*sigma), to=(mu + 4*sigma), length.out = 1000),mean=mu,sd=sigma),
+             type="l",xlim=c(mu - 4*sigma, mu + 4*sigma), xlab="x",ylab="f(x)",
+             main="Normal Probability Density Function") +
+        polygon(rbind(c(mu - nsigma*sigma,0),cbind(seq(from=(mu - nsigma*sigma),to=(mu + nsigma*sigma),length.out=1000),dnorm(seq(from=(mu - nsigma*sigma), to=(mu + nsigma*sigma), length.out = 1000),mean=mu,sd=sigma)),c(mu + nsigma*sigma,0)),border=NA,col="salmon") +
+        abline(v=mu, col = "blue") + abline(h=0) + abline(v=c(mu - nsigma*sigma, mu + nsigma * sigma),col="salmon"),
+    mu=slider(-10, 10, initial=0, step=0.25),
+    sigma=slider(0.25, 4, initial=1, step=0.25),
+    nsigma=slider(0,4,initial=0,step=0.25)
+```
+
+```{r}
+manipulate(plot(seq(from=(mu - 4*sigma), to=(mu + 4*sigma), length.out = 1000), dnorm(seq(from=(mu - 4*sigma), to=(mu + 4*sigma), length.out = 1000), mean=mu,sd=sigma), type="l",xlim=c(mu - 4*sigma,mu+4*sigma), xlab="x",ylab="f(x)", main="Normal Probability Density Function") + abline(v=mu, col="blue") + abline(h=0) + polygon(x=c(qnorm((1-CI)/2,mean=mu,sd=sigma),qnorm((1-CI)/2,mean=mu,sd=sigma), qnorm(1-(1-CI)/2,mean=mu,sd=sigma),qnorm(1-(1-CI)/2,mean=mu,sd=sigma)),y=c(0,1,1,0),border="red"), mu=slider(-10, 10, initial=0, step=0.25), sigma=slider(0.25, 10, initial=1, step=0.25), CI=slider(0.50,0.99,initial=0.90, step=0.01)
+)
+```
+
+
