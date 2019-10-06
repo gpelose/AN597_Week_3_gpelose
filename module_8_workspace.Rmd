@@ -1,0 +1,46 @@
+---
+title: "Module_8_workbook"
+author: "Greg Pelose"
+date: "9/29/2019"
+output: html_document
+---
+
+intall packages 
+
+```{r}
+install.packages("manipulate")
+```
+```{r}
+library("manipulate")
+```
+
+Module work
+```{r}
+outcomes <- c("heads","tails")
+prob <- c(1/2,1/2)
+barplot(prob,ylim=c(0,0.6),names.arg=outcomes,space=0.1, xlab="outcome",ylab="Pr(X = outcome)",main="Probability Mass Function")
+```
+
+```{r}
+cumprob <- cumsum(prob)
+barplot(cumprob,names.arg=outcomes,space=0.1,xlab="outcome",ylab="Cumulative Pr(X)",main = "Cumulative Probability")
+```
+
+```{r}
+library(ggplot2)
+a <- 2
+b <- 1
+K <- 2
+x <- seq(from= 0, to=1, by = 0.025)
+fx <- K*x^(a-1)*(1-x)^(b-1)
+lower_x <- seq(from=-0.25, to=0, by= 0.025) # add some values of x less than zero
+upper_x <- seq(from=1, to=1.25, by= 0.025) # add some values of x greater than one
+lower_fx <- rep(0,11) # add fx=0 values to x<0
+upper_fx <- rep(0,11) # add fx=0 values to x>1
+x <- c(lower_x,x,upper_x) # paste xs together
+fx <- c(lower_fx,fx,upper_fx) # paste fxs together
+d <- as.data.frame(cbind(x,fx))
+p <- ggplot(data = d, aes(x=x, y=fx)) + xlab("x") + ylab("f(x)") + geom_line()
+p
+```
+

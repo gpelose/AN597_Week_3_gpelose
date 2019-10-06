@@ -1,0 +1,168 @@
+---
+title: "module 7 notes"
+author: "Greg Pelose"
+date: "9/23/2019"
+output: html_document
+---
+
+First I will be installing the package called scipolt
+
+```{r}
+install.packages("sciplot")
+```
+
+I then looked at the different terms 
+
+I then the vector that we were told to create.
+```{r}
+x <- c(1,2,3,4,5,6,7,8,9,10,25,50,100,200,1000)
+```
+
+I am then going to take the geometric mean naming the function gm1
+
+```{r}
+gm1 <- function(x){prod(x)^(1/length(x))}
+gm1(x)
+```
+
+How does one create a function to create a harmonic mean by creating hm1
+
+```{r}
+x<-c(1,2,3,4,5)
+hm1 <- function(x){1/(mean(1/x))}
+hm1(x)
+```
+
+Following this I created the geometric mean again using a different method. First I created a new vector then type in the code. 
+
+```{r}
+x <- c(1,2,3,4,5,6,7,8,9,10,25,50,100,200,1000)
+gm2 <- function(x){exp(mean(log(x)))}
+gm2(x)
+```
+
+How do I deal with missing data. For fututr coding I need to know if there is missing data. One tell tale sign is when everything pops us as NA. 
+
+```{r}
+x <- c(1,2,3,4,5,6,7,8,9,NA,25,50,100,200,1000)
+gm2 <- function(x){exp(mean(log(x)))}
+gm2(x)
+na.omit()
+```
+
+
+Write a function to calculate the sum of squares for a vector, figure out how to get rid of the NA thing again. but essentially we are adding all of the distance or value that each data point is away from the mean. The sum of squares increases with sample size, this is intuative because every data point that is added adds a physical number to the whole sum. 
+
+```{r}
+ss1 <- function(x){sum((x-mean(x))^2)}
+ss1(x)
+```
+
+To compare to data sets that have different number of variables is hard, this is called the mean squared deviation. this is the definition of the mean of the sum of squares of the data set, this controls for sample size accross all data sets. Interesting stuff. Check of visualization. this is called the population variance of the data set essentially. 
+
+```{r}
+pop_v <- function(x){sum((x-mean(x))^2)/(length(x))}
+pop_v(x)
+
+#this will work when you figure out how to get rid of the NA.
+```
+
+n-1 is called degrees of freedom
+
+we used n observations to calculate the mean of our sample and then we went ahead and 
+
+How does Sample Variance compare to Population Variance? What happens to the sample variance as sample size increases?
+  you get closer to getting the mean value as your        sample size increases.
+
+ReSETTING
+
+```{r}
+x <- c(1,2,3,4,5,6,7,8,9,NA,25,50,100,200,1000)
+plot(c(0, 50), c(0, 15), type="n", xlab= "Sample size", ylab="Variance")
+```
+
+Creating a 4 loop, supposidly very confusing 
+what this is sayingbelow is that we will take a random number in the sequence from 0 to 50 and counting by 5 every time. 
+
+```{r}
+#this is the vector
+x <- c(1,2,3,4,5,6,7,8,9,NA,25,50,100,200,1000)
+#here is the shell for our plot
+plot(c(0, 50), c(0, 15), type="n", xlab= "Sample size", ylab="Variance")
+
+#here is the for loop giving us our points
+for (n in seq(5,50,5))
+    # samples of 5, 10, 15...
+    {
+    for(i in 1:50)
+        # 50 replicates
+        {
+            x<- rnorm(n, mean=10 ,sd=2)
+            points(n,var(x))
+        }
+    }
+```
+
+What is stated above creates this plot where the i is showing me that it will be taking a random number in the sequence and allowing for it to work 20 times. 
+
+With this graph we will want to see the standard deviation of the material both the population and the sample
+
+```{r}
+pop_sd <- function(x){sqrt(pop_v(x))}
+pop_sd(x)
+```
+
+sample:
+
+```{r}
+sample_sd <- function(x){sqrt(sample_v(x))}
+sample_sd(x)
+```
+
+
+Following this 
+Now we are going to create a function that will show the standard error of a function.
+
+```{r}
+SE1 <- function(x){sqrt(sample_v(x)/length(x))}
+SE1(x)
+```
+ Another possible way to do this below:
+ 
+```{r}
+SE2 <- function(x){sqrt(var(x)/length(x))}
+SE2(x)
+```
+
+
+Calculating confidence intervals using standard error, I have created a histogram and a confidence interval here, I amnot exaclty sure where this code comes from but I will look this up at a later date.
+
+```{r}
+set.seed(1)
+x <- rnorm(10000,0,1)
+hist(x)
+
+x<-seq(from = -4, to = 4, by = 0.01)
+plot(x,dnorm(x), cex=0.4)
+```
+
+BOOTSTRAPPING
+
+```{r}
+set <- NULL # sets up a dummy variable to hold our 10000 simulations
+n <- 5
+for (i in 1:10000){
+    set[i] <- mean(sample(x, n, replace=TRUE))
+}
+
+quantile(set, c(0.025, 0.975))
+
+
+```
+
+
+
+
+
+
+
